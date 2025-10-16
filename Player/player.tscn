@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://7ga6ldy1jobf"]
+[gd_scene load_steps=6 format=3 uid="uid://7ga6ldy1jobf"]
 
-[ext_resource type="Script" uid="uid://bbsklk8pmy0pw" path="res://character_body_3d.gd" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://cpyfoa0shui7n" path="res://PowerUpManager.gd" id="2_onrkg"]
+[ext_resource type="Script" uid="uid://bbsklk8pmy0pw" path="res://Player/character_body_3d.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://cpyfoa0shui7n" path="res://Player/PowerUpManager.gd" id="2_onrkg"]
+[ext_resource type="Script" uid="uid://cyga177lkvrsc" path="res://Player/debuff_manager.gd" id="3_i3pqv"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4flbx"]
 
@@ -32,3 +33,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="PowerUpManager" type="Node3D" parent="."]
 script = ExtResource("2_onrkg")
+
+[node name="DebuffManager" type="Node3D" parent="."]
+script = ExtResource("3_i3pqv")

@@ -31,15 +31,5 @@ func _on_body_entered(body: Node3D):
 	queue_free()
 		
 func _apply_powerup(player: Node3D):
-	match powerup_type:
-		"speed":
-			if player.has_method("apply_speed_boost"):
-				player.apply_speed_boost(value_modifier, duration)
-		"jump":
-			if player.has_method("apply_jump_boost"):
-				player.apply_jump_boost(value_modifier,duration)
-		"health":
-			if player.has_method("heal"):
-				player.heal(value_modifier, duration)
-		_:
-			push_warning("Unknow power-up type: %s" % powerup_type)
+	if player.has_method("apply_power_up"):
+		player.apply_power_up(powerup_type, value_modifier, duration)
