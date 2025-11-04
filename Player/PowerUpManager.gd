@@ -9,11 +9,17 @@ func init(player: CharacterBody3D):
 	
 
 func apply_power_up(effect_name: String, value: float, duration: float) -> void:
+	print_debug("Applying powerup")
+	print_debug("Fed parameters - effect_name: ",effect_name, " | value: ", value," | duration: ", duration)
 	match effect_name:
 		"speed":
-			owner_player.speed *= value
+			print_debug("Applying speed effect")
+			owner_player.current_speed *= value
+			owner_player.check_speed()
 		"jump":
-			owner_player.jump_velocity *= value
+			owner_player.current_jump_velocity *= value
+		_:
+			push_warning("Unknow power-up type: %s" % effect_name)
 # add more effects here
 	
 	if active_powerups.has(effect_name):
@@ -30,8 +36,8 @@ func apply_power_up(effect_name: String, value: float, duration: float) -> void:
 func _remove_power_up(effect_name: String, value: float) -> void:
 	match effect_name:
 		"speed":
-			owner_player.speed /= value
+			owner_player.current_speed /= value
 		"jump":
-			owner_player.jump_velocity /= value
+			owner_player.current_jump_velocity /= value
 # reverse other effects here
 	active_powerups.erase(effect_name)

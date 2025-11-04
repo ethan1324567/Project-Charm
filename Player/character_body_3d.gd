@@ -22,8 +22,9 @@ extends CharacterBody3D
 @export var crouch_height: float = 1.0
 @export var transition_speed: float = 10.0
 @export var ProjectileScene: PackedScene
-@export var current_speed: float = speed
-@export var current_jump_velocity: float = jump_velocity
+var current_speed: float = speed
+var current_jump_velocity: float = jump_velocity
+var current_mouse_sensitivity: float = mouse_sensitivity
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -31,6 +32,7 @@ var head: Node3D
 var ray: RayCast3D
 var camera: Camera3D
 var crouched: bool = false
+var can_look: bool = true
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var mesh_shape: MeshInstance3D = $MeshInstance3D
 var original_camera_y: float
@@ -41,8 +43,9 @@ var can_shoot: bool = true
 
 const ACTION_SHOOT = "shoot"
 
-# Reference to our power-up manager node
+# Reference to our power-up and debuff manager node
 @onready var powerup_manager = $PowerUpManager
+@onready var debuff_manager = $DebuffManager
 
 func _ready():
 	head = get_node("Head")
@@ -52,6 +55,10 @@ func _ready():
 # Let the powerup manager know who owns it
 	if powerup_manager and powerup_manager.has_method("init"):
 		powerup_manager.init(self)
+		
+#Let the debuff manager establish itself in heirarchy
+	if debuff_manager and debuff_manager.has_method("init"):
+		debuff_manager.init(self)
 
 	if not (collision_shape.shape is CapsuleShape3D and mesh_shape.mesh is CapsuleMesh):
 		push_error("Assigned nodes must have CapsuleShape3D and CapsuleMesh resources.")
@@ -66,9 +73,9 @@ func _ready():
 		
 func _input(event: InputEvent):
 	#Mouse Movements
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
-		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and can_look:
+		rotate_y(deg_to_rad(-event.relative.x * current_mouse_sensitivity))
+		head.rotate_x(deg_to_rad(-event.relative.y * current_mouse_sensitivity))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 		
 	#Key Presses
@@ -78,6 +85,7 @@ func _input(event: InputEvent):
 		if Input.is_action_just_pressed(log_data):
 			print("Speed: ", current_speed)
 			print("Jump: ", current_jump_velocity)
+			
 			
 			
 	#Mouse Clicks
@@ -138,13 +146,23 @@ func shoot():
 func apply_power_up(effect_name: String, value: float, duration: float) -> void:
 	if powerup_manager:
 		powerup_manager.apply_power_up(effect_name, value, duration)
-func apply_speed_boost(amount: float, duration: float) -> void:
-	current_speed = speed * amount
-	get_tree().create_timer(duration).timeout.connect(func(): current_speed = speed)
+#func apply_speed_boost(amount: float, duration: float) -> void:
+	#current_speed = speed * amount
+	#get_tree().create_timer(duration).timeout.connect(func(): current_speed = speed)
+	#
+#func apply_jump_boost(amount: float, duration: float) -> void:
+	#current_jump_velocity = jump_velocity * amount
+	#get_tree().create_timer(duration).timeout.connect(func(): current_jump_velocity = jump_velocity)
 	
-func apply_jump_boost(amount: float, duration: float) -> void:
-	current_jump_velocity = jump_velocity * amount
-	get_tree().create_timer(duration).timeout.connect(func(): current_jump_velocity = jump_velocity)
 	
+#Debuff application wrapper
+func apply_debuff(debuff_name: String, value: float, duration: float) -> void:
+	print(debuff_name, " Applied")
+	if debuff_manager:
+		debuff_manager.apply_debuff(debuff_name, value, duration)
+	
+	
+func check_speed():
+	print_debug("Speed: ", speed)
 	
 	
