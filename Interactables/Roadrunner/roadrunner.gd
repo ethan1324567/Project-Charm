@@ -3,11 +3,11 @@ extends CharacterBody3D
 
 @export var player: Node3D
 
-const WANDER_SPEED: float = 4.0
-const FLEE_SPEED: float = 6.0
-const FLEE_DISTANCE: float = 5.0
-const SAFE_DISTANCE: float = 20.0
-const WANDER_INTERVAL: float = 3.0
+@export var WANDER_SPEED: float = 2.0
+@export var FLEE_SPEED: float = 4.5
+@export var FLEE_DISTANCE: float = 5.0
+@export var SAFE_DISTANCE: float = 20.0
+@export var WANDER_INTERVAL: float = 3.0
 
 enum State { WANDER, FLEE }
 
