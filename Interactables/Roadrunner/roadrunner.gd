@@ -3,17 +3,25 @@ extends CharacterBody3D
 
 @export var player: Node3D
 
-const WANDER_SPEED: float = 4.0
-const FLEE_SPEED: float = 6.0
-const FLEE_DISTANCE: float = 5.0
-const SAFE_DISTANCE: float = 20.0
-const WANDER_INTERVAL: float = 3.0
+@export var WANDER_SPEED: float = 2.0
+@export var FLEE_SPEED: float = 4.5
+@export var FLEE_DISTANCE: float = 5.0
+@export var SAFE_DISTANCE: float = 20.0
+@export var WANDER_INTERVAL: float = 3.0
 
 enum State { WANDER, FLEE }
 
 var current_state: State = State.WANDER
 var wander_direction: Vector3 = Vector3.ZERO
 var _wander_timer: Timer
+
+# --- Powerup drop on click configuration ---
+@export var powerup_scene: PackedScene = preload("res://Interactables/Power Ups/power_up.tscn")
+@export var drop_powerup_type: String = "speed"
+@export var drop_value_modifier: float = 1.5
+@export var drop_duration: float = 5.0
+@export var drop_offset: Vector3 = Vector3(0, 0.5, 0)
+@export var click_range: float = 4.0
 
 func _ready() -> void:
 	_wander_timer = Timer.new()
@@ -22,6 +30,7 @@ func _ready() -> void:
 	_wander_timer.timeout.connect(_on_wander_timer_timeout)
 	_pick_new_wander_direction()
 	_wander_timer.start()
+
 
 func _physics_process(delta: float) -> void:
 	var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -73,3 +82,30 @@ func _on_wander_timer_timeout() -> void:
 func _pick_new_wander_direction() -> void:
 	var random_angle = randf() * TAU
 	wander_direction = Vector3(cos(random_angle), 0, sin(random_angle))
+
+
+
+func kill(spawn_powerup: bool = true) -> void:
+	"""Public kill method: spawns the configured powerup (if spawn_powerup) and frees this node.
+
+	Other scripts can call `roadrunner.kill()` to trigger the same behavior the click used to.
+	"""
+	if spawn_powerup:
+		_spawn_powerup()
+	queue_free()
+
+
+func _spawn_powerup() -> void:
+	if not powerup_scene:
+		push_warning("No powerup scene assigned on Roadrunner")
+		return
+
+	var pu = powerup_scene.instantiate()
+	# configure the created powerup (these fields exist on the powerup script)
+	pu.powerup_type = drop_powerup_type
+	pu.value_modifier = drop_value_modifier
+	pu.duration = drop_duration
+
+	# place the powerup at this roadrunner's location (with configurable offset)
+	get_parent().add_child(pu)
+	pu.global_position = global_position + drop_offset
