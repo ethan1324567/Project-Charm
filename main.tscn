@@ -47,6 +47,7 @@ shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+speed = 10.0
 
 [node name="SpeedBoost" parent="." instance=ExtResource("2_0xm2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21384907, 0.9191122, 2)
@@ -57,7 +58,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.041908, 0.9191122, 2)
 powerup_type = "jump"
 color = Color(0, 1, 1, 1)
 
-[node name="Roadrunner" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_h2yge")]
+[node name="Roadrunner" parent="." node_paths=PackedStringArray("player") groups=["enemy"] instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.898445, 1.4340038, 0)
 player = NodePath("../Player")
 

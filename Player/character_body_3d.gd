@@ -8,6 +8,7 @@ extends CharacterBody3D
 @export var move_backward: String = "s_key"
 @export var crouch: String = "c_key"
 @export var jump: String = "space_key"
+@export var melee_attack: String = "left_click"
 
 
 @export_subgroup("Interface")
@@ -23,9 +24,17 @@ extends CharacterBody3D
 @export var crouch_height: float = 1.0
 @export var transition_speed: float = 10.0
 @export var ProjectileScene: PackedScene
-var current_speed: float = speed
-var current_jump_velocity: float = jump_velocity
-var current_mouse_sensitivity: float = mouse_sensitivity
+@export_subgroup("Melee Settings")
+@export var attack_range: float = 5.0 # Max distance to hit an enemy
+@export var melee_cooldown: float = 0.5 # Time between attacks
+@export var enemy_collision_layer: int = 3 # The physics layer where your enemies are located
+
+var is_attacking: bool = false # Tracks attack status to enforce cooldown
+
+
+var current_speed: float
+var current_jump_velocity: float 
+var current_mouse_sensitivity: float 
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -50,6 +59,10 @@ const ACTION_SHOOT = "shoot"
 
 
 func _ready():
+	current_speed = speed
+	current_jump_velocity = jump_velocity
+	current_mouse_sensitivity = mouse_sensitivity
+	
 	head = get_node("Head")
 	camera = get_node("Head/Camera3D")
 	ray = get_node("Head/Camera3D/RayCast3D")
@@ -89,7 +102,8 @@ func _input(event: InputEvent):
 			print("Speed: ", current_speed)
 			print("Jump: ", current_jump_velocity)
 			
-			
+	if Input.is_action_just_pressed(melee_attack):
+		perform_crosshair_melee_attack()
 			
 	#Mouse Clicks
 	if event is InputEventMouseButton and event.is_pressed() and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
@@ -134,16 +148,6 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-func shoot():
-	if not can_shoot:
-		return
-
-	can_shoot = false
-	var projectile_instance = ProjectileScene.instantiate()
-	get_tree().root.add_child(projectile_instance)
-	projectile_instance.global_transform = $Head/Muzzle.global_transform
-
-	get_tree().create_timer(fire_rate).timeout.connect(func(): can_shoot = true)
 
 # Wrapper so power-ups can call a single function
 func apply_power_up(effect_name: String, value: float, duration: float) -> void:
@@ -172,4 +176,54 @@ func apply_debuff(debuff_name: String, value: float, duration: float) -> void:
 func check_speed():
 	print_debug("Speed: ", speed)
 	
+	
+# --- New Melee Function ---
+func perform_crosshair_melee_attack():
+	if is_attacking:
+		return
+
+	# 1. Start Cooldown and Attack State
+	is_attacking = true
+	var cooldown_timer = get_tree().create_timer(melee_cooldown, false)
+	cooldown_timer.timeout.connect(func(): is_attacking = false)
+
+	# Optional: Trigger your arm swing animation here
+	# Example (assuming PlayerArm has an AnimationPlayer):
+	# $Head/Camera3D/PlayerArm/AnimationPlayer.play("swing")
+	
+	# 2. Calculate Ray Origin and End Point (using Camera)
+	var ray_origin = camera.global_position
+	# The camera's negative Z-axis is the forward direction
+	var ray_direction = -camera.global_transform.basis.z 
+	var ray_end = ray_origin + ray_direction * attack_range
+
+	# 3. Setup Physics Query
+	var space = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+	
+	# Exclude the player's own body from the check
+	query.exclude = [self] 
+	
+	# Only check objects on the designated enemy layer
+	# Collision layers use a bitmask (1 << layer_number - 1)
+	query.collision_mask = (1 << (enemy_collision_layer - 1))
+	
+	# 4. Perform the Raycast
+	var result = space.intersect_ray(query)
+
+	# 5. Process the Result
+	if result.is_empty() == false:
+		var hit_body = result.collider
+		
+		# Check if the hit object is in the "enemy" group (best practice)
+		if hit_body.is_in_group("enemy"):
+			print_debug("Melee hit target: ", hit_body.name)
+			
+			# Call a damage function on the entity
+			if hit_body.has_method("take_damage"):
+				hit_body.take_damage(25) # Example damage
+				
+			# Optional: Add hit effect at result.position
+			# You can use the raycast info for a directional particle effect
+			# print("Hit Position: ", result.position)
 	
