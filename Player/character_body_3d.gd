@@ -25,7 +25,7 @@ extends CharacterBody3D
 @export var transition_speed: float = 10.0
 @export var ProjectileScene: PackedScene
 @export_subgroup("Melee Settings")
-@export var attack_range: float = 5.0 # Max distance to hit an enemy
+@export var attack_range: float = 2.0 # Max distance to hit an enemy
 @export var melee_cooldown: float = 0.5 # Time between attacks
 @export var enemy_collision_layer: int = 3 # The physics layer where your enemies are located
 
@@ -168,7 +168,7 @@ func apply_power_up(effect_name: String, value: float, duration: float) -> void:
 	
 #Debuff application wrapper
 func apply_debuff(debuff_name: String, value: float, duration: float) -> void:
-	print(debuff_name, " Applied")
+	#print(debuff_name, " Applied")
 	if debuff_manager:
 		debuff_manager.apply_debuff(debuff_name, value, duration)
 	
@@ -217,7 +217,8 @@ func perform_crosshair_melee_attack():
 		
 		# Check if the hit object is in the "enemy" group (best practice)
 		if hit_body.is_in_group("enemy"):
-			print_debug("Melee hit target: ", hit_body.name)
+			#print_debug("Melee hit target: ", hit_body.name)
+			hit_body.kill()
 			
 			# Call a damage function on the entity
 			if hit_body.has_method("take_damage"):
