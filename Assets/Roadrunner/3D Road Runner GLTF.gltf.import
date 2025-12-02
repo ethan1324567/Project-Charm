@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://skq2bbvqfdx8"
-path="res://.godot/imported/road runner GLTF.gltf-8181d478c02c7d64df330f2e516f990a.scn"
+uid="uid://c8nqicmcnkhah"
+path="res://.godot/imported/3D Road Runner GLTF.gltf-c65f3e23970c70e3e7f89f3dc3da7be6.scn"
 
 [deps]
 
-source_file="res://Assets/Roadrunner/road runner GLTF.gltf"
-dest_files=["res://.godot/imported/road runner GLTF.gltf-8181d478c02c7d64df330f2e516f990a.scn"]
+source_file="res://Assets/Roadrunner/3D Road Runner GLTF.gltf"
+dest_files=["res://.godot/imported/3D Road Runner GLTF.gltf-c65f3e23970c70e3e7f89f3dc3da7be6.scn"]
 
 [params]
 
