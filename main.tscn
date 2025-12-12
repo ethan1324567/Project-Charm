@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://7ga6ldy1jobf" path="res://Player/player.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://bpj5gjww1et1o" path="res://Interactables/Power Ups/power_up.tscn" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://pwwflogdcxf5" path="res://Interactables/Roadrunner/roadrunner.tscn" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://15rp3weutgn" path="res://lucky_charms_guy.tscn" id="4_5vw27"]
+[ext_resource type="PackedScene" uid="uid://cj8sswdqf33dl" path="res://Interactables/Lucky Charms Guy/lucky_charms_guy.tscn" id="4_5vw27"]
 [ext_resource type="Texture2D" uid="uid://b33o8s4kmw46v" path="res://Assets/Textures/Sand/Rippled_Sand_xd0mda1_1K_BaseColor.jpg" id="4_272bh"]
 [ext_resource type="Texture2D" uid="uid://da1fxhictq2b8" path="res://Assets/Textures/Sand/Rippled_Sand_xd0mda1_1K_AO.jpg" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://c8xdwl4nn353e" path="res://Assets/Textures/Sand/Rippled_Sand_xd0mda1_1K_Normal.jpg" id="6_kek77"]
@@ -63,7 +63,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.898445, 1.4340038, 0)
 player = NodePath("../Player")
 
 [node name="Lucky Charms Guy" parent="." instance=ExtResource("4_5vw27")]
-transform = Transform3D(0.291487, 0, -0.9565748, 0, 1, 0, 0.9565748, 0, 0.291487, 0, 0, 4.6535254)
+transform = Transform3D(0.031096766, 0, -0.99951637, 0, 1, 0, 0.99951637, 0, 0.031096766, 0, 0, 3.7583678)
 
 [node name="Map" type="Node3D" parent="."]
 
