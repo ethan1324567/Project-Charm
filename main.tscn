@@ -62,8 +62,9 @@ color = Color(0, 1, 1, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.898445, 1.4340038, 0)
 player = NodePath("../Player")
 
-[node name="Lucky Charms Guy" parent="." instance=ExtResource("4_5vw27")]
+[node name="Lucky Charms Guy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_5vw27")]
 transform = Transform3D(0.031096766, 0, -0.99951637, 0, 1, 0, 0.99951637, 0, 0.031096766, 0, 0, 3.7583678)
+player = NodePath("../Player")
 
 [node name="Map" type="Node3D" parent="."]
 

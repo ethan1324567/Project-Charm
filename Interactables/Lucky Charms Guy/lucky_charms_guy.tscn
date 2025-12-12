@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj8sswdqf33dl"]
+[gd_scene load_steps=4 format=3 uid="uid://cj8sswdqf33dl"]
 
 [ext_resource type="PackedScene" uid="uid://dybfq6jv7717s" path="res://Assets/Lucky Charms Guy/lucky charm guy GLTF.gltf" id="1_cje8c"]
+[ext_resource type="Script" uid="uid://bs7um3r6lcifj" path="res://Interactables/Lucky Charms Guy/lucky_charms_guy.gd" id="2_lcgscript"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cje8c"]
 size = Vector3(0.1, 1.185669, 0.6359863)
 
 [node name="Lucky Charms Guy" type="CharacterBody3D"]
+script = ExtResource("2_lcgscript")
 
 [node name="blockbench_export" parent="." instance=ExtResource("1_cje8c")]
+transform = Transform3D(-0.04163151, 0, -0.99913305, 0, 1, 0, 0.99913305, 0, -0.04163151, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5928345, -0.038208008)
