@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 [gd_scene load_steps=9 format=3 uid="uid://7ga6ldy1jobf"]
+=======
+[gd_scene load_steps=12 format=3 uid="uid://7ga6ldy1jobf"]
+>>>>>>> Player-HUD-and-UI
 
 [ext_resource type="Script" uid="uid://bbsklk8pmy0pw" path="res://Player/character_body_3d.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://cpyfoa0shui7n" path="res://Player/PowerUpManager.gd" id="2_onrkg"]
+[ext_resource type="Script" uid="uid://cxipuh1b5jdsx" path="res://Player/texture_progress_bar.gd" id="3_fhl08"]
 [ext_resource type="Script" uid="uid://cyga177lkvrsc" path="res://Player/debuff_manager.gd" id="3_i3pqv"]
 [ext_resource type="Script" uid="uid://do5g0j5cbj2by" path="res://Player/player_arm.gd" id="3_k53q1"]
+<<<<<<< HEAD
+=======
+[ext_resource type="Texture2D" uid="uid://bvcnx2wc1bvwf" path="res://Assets/Textures/texture_under.png" id="3_od3ui"]
+[ext_resource type="Texture2D" uid="uid://dlbvt3v1mr42f" path="res://Assets/Textures/texture_progress.png" id="4_00tjw"]
+>>>>>>> Player-HUD-and-UI
 [ext_resource type="Script" uid="uid://do056li2scq63" path="res://Player/control.gd" id="4_gwnis"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4flbx"]
@@ -17,28 +27,76 @@ collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_4flbx")
 
+<<<<<<< HEAD
 [node name="Player UI" type="CanvasLayer" parent="."]
 
 [node name="GridContainer" type="GridContainer" parent="Player UI"]
+=======
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="PlayerUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="Control" parent="PlayerUI/Control"]
+layout_mode = 1
+>>>>>>> Player-HUD-and-UI
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+<<<<<<< HEAD
 offset_left = -960.0
 offset_top = -540.0
 offset_right = 960.0
 offset_bottom = 540.0
+=======
+>>>>>>> Player-HUD-and-UI
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
+<<<<<<< HEAD
 
 [node name="Crosshair" type="Control" parent="Player UI/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("4_gwnis")
+=======
+script = ExtResource("4_gwnis")
+dot_color = Color(0, 0.15294118, 0, 1)
+
+[node name="StatusTimer" type="TextureProgressBar" parent="PlayerUI/Control"]
+top_level = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -256.0
+offset_right = 256.0
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(0, 128)
+max_value = 5.0
+fill_mode = 4
+texture_under = ExtResource("3_od3ui")
+texture_progress = ExtResource("4_00tjw")
+tint_under = Color(1, 0, 0, 0.3647059)
+tint_over = Color(1, 1, 1, 0.41960785)
+tint_progress = Color(0, 1, 0, 1)
+script = ExtResource("3_fhl08")
+
+[node name="TextureRect" type="TextureRect" parent="PlayerUI/Control/StatusTimer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+>>>>>>> Player-HUD-and-UI
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_4flbx")

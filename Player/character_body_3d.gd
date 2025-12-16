@@ -52,6 +52,7 @@ var target_height: float
 var can_shoot: bool = true
 
 const ACTION_SHOOT = "shoot"
+@onready var status_timer_ui: TextureProgressBar = $PlayerUI/Control/StatusTimer
 
 # Reference to our power-up and debuff manager node
 @onready var powerup_manager = $PowerUpManager
@@ -67,13 +68,13 @@ func _ready():
 	camera = get_node("Head/Camera3D")
 	ray = get_node("Head/Camera3D/RayCast3D")
 
-# Let the powerup manager know who owns it
+# Let the powerup manager know who owns it AND the status UI
 	if powerup_manager and powerup_manager.has_method("init"):
-		powerup_manager.init(self)
+		powerup_manager.init(self, status_timer_ui) # <-- PASS UI REFERENCE
 		
-#Let the debuff manager establish itself in heirarchy
+	# Let the debuff manager establish itself in heirarchy AND the status UI
 	if debuff_manager and debuff_manager.has_method("init"):
-		debuff_manager.init(self)
+		debuff_manager.init(self, status_timer_ui) # <-- PASS UI REFERENCE
 
 	if not (collision_shape.shape is CapsuleShape3D and mesh_shape.mesh is CapsuleMesh):
 		push_error("Assigned nodes must have CapsuleShape3D and CapsuleMesh resources.")
